@@ -47,7 +47,7 @@ sudo printf "export PATH=\"$PATH:/usr/sbin/\"" >> ~/.profile
 export PATH="$PATH:/usr/sbin/"
 
 while true; do
-    read -p "Do you wish to deploy DEV or PROD enviroment? (test/prod) " yn
+    read -p "Do you wish to deploy DEV or PROD enviroment? (dev/prod) " yn
     case $yn in
         [dev]* ) option=0;break;;
         [prod]* ) option=1; break;;
