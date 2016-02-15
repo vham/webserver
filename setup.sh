@@ -51,7 +51,7 @@ while true; do
     case $yn in
         [dev]* ) option=0;break;;
         [prod]* ) option=1; break;;
-        * ) echo "Please answer yes or no.";;
+        * ) echo "Please answer dev or prod.";;
     esac
 done
 if [ $option = 1 ]; then
@@ -78,14 +78,14 @@ sudo chmod 777 /var/www/html
 #sudo printf '%s\n' '<html><body><h1>I&#39m Running!</h1><br><h4>Test provided by: victorhugo.avila@easy-point.com</h4></body></html>' >> /var/www/html/index.html
 
 while true; do
-    read -p "Do you wish to install MySQL?" yn
+    read -p "Do you wish to install MySQL? (y/n)" yn
     case $yn in
         [y]* ) option=0;break;;
         [n]* ) option=1; break;;
         * ) echo "Please answer yes or no.";;
     esac
 done
-if [ $option = 1 ]; then
+if [ $option = 0 ]; then
   echo "**************************************************************"
   echo "Installing MySQL..."
   echo "**************************************************************"
@@ -95,10 +95,20 @@ if [ $option = 1 ]; then
   sudo systemctl restart mysql.service
 fi
 
-echo "**************************************************************"
-echo "Installing phpMyAdmin..."
-echo "**************************************************************"
-sudo apt-get -y install phpmyadmin
+while true; do
+    read -p "Do you wish to install phpMyAdmin? (y/n)" yn
+    case $yn in
+        [y]* ) option=0;break;;
+        [n]* ) option=1; break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+if [ $option = 0 ]; then
+  echo "**************************************************************"
+  echo "Installing phpMyAdmin..."
+  echo "**************************************************************"
+  sudo apt-get -y install phpmyadmin
+fi
 
 echo "**************************************************************"
 echo "Installing PHP..."
