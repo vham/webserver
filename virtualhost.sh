@@ -12,7 +12,7 @@ while true; do
     esac
 done
 while true; do
-    read -p "write index path: " path
+    read -p "write index absolute path: " path
     case $name in
         * ) route=$path; break;;
     esac
@@ -22,7 +22,7 @@ if [ $name != "" ] && [ $route != "" ]; then
   sudo touch /etc/apache2/sites-available/$name.conf
   sudo chmod 777 /etc/apache2/sites-available/$name.conf
   sudo printf "<VirtualHost *:80>\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      DocumentRoot /var/www/$route\n" >> /etc/apache2/sites-available/$name.conf
+  sudo printf "      DocumentRoot $route\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "      ServerName www.$name\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "      ServerAlias $name\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "      #ErrorLog /var/www/$name/error.log\n" >> /etc/apache2/sites-available/$name.conf

@@ -27,8 +27,8 @@ echo "Installing rpm..."
 sudo apt-get -y install rpm
 echo "Installing debconf..."
 sudo apt-get install debconf
-echo "Installing GIT..."
-sudo apt-get install git
+#echo "Installing GIT..."
+#sudo apt-get install git
 
 #Since using gcloud ssh ftp VSFTP is deprecated
 #echo "Installing vsftpd"
