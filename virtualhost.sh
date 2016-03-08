@@ -18,20 +18,29 @@ while true; do
     esac
 done
 while true; do
-    read -p "write user if you want to protect the access: " user
-    case $user in
-        * ) username=$user; break;;
+    read -p "Do you wish to add password protecction (y/n) " yn
+    case $yn in
+        [y]* ) option=0;break;;
+        [n]* ) option=1; break;;
+        * ) echo "Please answer y or n.";;
     esac
 done
-if [[ username !='' ]]; then
+if [$option = y]; then
   while true; do
-      read -p "write password for the user to protect the access: " pass
-      case $pass in
-          * ) password=$pass; break;;
+      read -p "write user to protect the access: " user
+      case $user in
+          * ) username=$user; break;;
       esac
   done
+  if [ username !='' ]; then
+    while true; do
+        read -p "write password for the user to protect the access: " pass
+        case $pass in
+            * ) password=$pass; break;;
+        esac
+    done
+  fi
 fi
-
 if [ $name != "" ] && [ $route != "" ]; then
   sudo touch /etc/apache2/sites-available/$name.conf
   sudo chmod 777 /etc/apache2/sites-available/$name.conf
