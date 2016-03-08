@@ -42,6 +42,8 @@ if [ $option = 0 ]; then
   fi
 fi
 if [ $name != "" ] && [ $route != "" ]; then
+  sudo rm /etc/apache2/sites-available/$name.conf
+  sudo rm /etc/apache2/sites-enabled/$name.conf
   sudo touch /etc/apache2/sites-available/$name.conf
   sudo chmod 777 /etc/apache2/sites-available/$name.conf
   sudo printf "<VirtualHost *:80>\n" >> /etc/apache2/sites-available/$name.conf
