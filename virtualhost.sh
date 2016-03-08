@@ -48,8 +48,8 @@ if [ $name != "" ] && [ $route != "" ]; then
   sudo chmod 777 /etc/apache2/sites-available/$name.conf
   sudo printf "<VirtualHost *:80>\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "     DocumentRoot $route\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      ServerName www.$name\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      ServerAlias $name\n" >> /etc/apache2/sites-available/$name.conf
+  sudo printf "      ServerName $name\n" >> /etc/apache2/sites-available/$name.conf
+  sudo printf "      ServerAlias www.$name\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "      <Directory $route>\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "         DirectoryIndex index.php\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "         Options Indexes FollowSymLinks MultiViews\n" >> /etc/apache2/sites-available/$name.conf
