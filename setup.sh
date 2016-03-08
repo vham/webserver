@@ -38,6 +38,43 @@ sudo apt-get install debconf
 #sudo mv -r vsftpd.conf /etc/vsftpd.conf
 
 echo "**************************************************************"
+echo "Preparing Swap area for extend memory..."
+echo "**************************************************************"
+while true; do
+    read -p "Do you wish to add Swap memmory (y/n) " yn
+    case $yn in
+        [y]* ) option=0;break;;
+        [n]* ) option=1; break;;
+        * ) echo "Please answer y or n.";;
+    esac
+done
+if [ $option = 1 ]; then
+  while true; do
+      read -p "Set the space in GB that you want to add to Swap memmory" gb
+      if [[ $gb > 0 ]]; then
+        break;
+      else
+        echo "Please set the space in GB."
+      fi
+  done
+  sudo fallocate -l $gb /swapfile
+  ls -lh /swapfile
+  sudo chmod 600 /swapfile
+  ls -lh /swapfile
+  sudo mkswap /swapfile
+  sudo swapon /swapfile
+  sudo swapon -s
+  free -m
+  sudo printf '/swapfile   none    swap    sw    0   0' >> /etc/fstab
+  sudo sysctl vm.swappiness=10
+  sudo sysctl vm.vfs_cache_pressure=50
+  sudo printf 'vm.swappiness=10' >> /etc/sysctl.conf
+  sudo printf 'vm.vfs_cache_pressure=50' >> /etc/sysctl.conf
+else
+  echo "No Swap memmory was added..."
+fi
+
+echo "**************************************************************"
 echo "Installing Web Server"
 echo "**************************************************************"
 echo "Installing Apache2..."
