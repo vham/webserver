@@ -32,7 +32,7 @@ if [ $option = 0 ]; then
           * ) username=$user; break;;
       esac
   done
-  if [ username !='' ]; then
+  if [ $username != '' ]; then
     while true; do
         read -p "write password for the user to protect the access: " pass
         case $pass in
