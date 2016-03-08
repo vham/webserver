@@ -25,7 +25,7 @@ while true; do
         * ) echo "Please answer y or n.";;
     esac
 done
-if [$option = y]; then
+if [ $option = 0 ]; then
   while true; do
       read -p "write user to protect the access: " user
       case $user in
@@ -56,7 +56,7 @@ if [ $name != "" ] && [ $route != "" ]; then
   sudo printf "         Allow from all\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "         Require all granted\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "      </Directory>\n" >> /etc/apache2/sites-available/$name.conf
-  if [[ $username != ''] && [ $pasword != '']]; then
+  if [ $username != ''] && [ $password != '']; then
     sudo htpasswd -bc $route/.htpasswd $username $password
     sudo printf "      <Location />\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "         AuthType Basic\n" >> /etc/apache2/sites-available/$name.conf
