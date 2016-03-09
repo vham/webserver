@@ -67,8 +67,6 @@ if [ $name != "" ] && [ $route != "" ]; then
     sudo printf "         Require valid-user\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "      </Location>\n" >> /etc/apache2/sites-available/$name.conf
   fi
-  sudo printf "      ErrorLog $route/error.log\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      CustomLog $route/access.log combined\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "</VirtualHost>\n" >> /etc/apache2/sites-available/$name.conf
   sudo ln -s /etc/apache2/sites-available/$name.conf /etc/apache2/sites-enabled/$name.conf
   echo "Cheking configuration..."
