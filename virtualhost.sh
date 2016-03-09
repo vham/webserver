@@ -58,6 +58,9 @@ if [ $name != "" ] && [ $route != "" ]; then
   sudo printf "         Allow from all\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "         Require all granted\n" >> /etc/apache2/sites-available/$name.conf
   sudo printf "      </Directory>\n" >> /etc/apache2/sites-available/$name.conf
+  echo "adding password protection"
+  echo $username
+  echo $password
   if [ $username != ''] && [ $password != '']; then
     sudo htpasswd -bc $route/.htpasswd $username $password
     sudo printf "      <Location />\n" >> /etc/apache2/sites-available/$name.conf
