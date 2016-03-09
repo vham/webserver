@@ -61,7 +61,7 @@ if [ $name != "" ] && [ $route != "" ]; then
   echo "adding password protection"
   echo $username
   echo $password
-  if [ $username != ''] && [ $password != '']; then
+  if [ $username != ""] && [ $password != ""]; then
     sudo htpasswd -bc $route/.htpasswd $username $password
     sudo printf "      <Location />\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "         AuthType Basic\n" >> /etc/apache2/sites-available/$name.conf
