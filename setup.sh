@@ -48,7 +48,7 @@ while true; do
         * ) echo "Please answer y or n.";;
     esac
 done
-if [ $option = 1 ]; then
+if [ $option = 0 ]; then
   while true; do
       read -p "Set the space in GB that you want to add to Swap memmory" gb
       if [[ $gb > 0 ]]; then
