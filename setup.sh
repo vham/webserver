@@ -41,7 +41,7 @@ echo "**************************************************************"
 echo "Preparing Swap area for extend memory..."
 echo "**************************************************************"
 while true; do
-    read -p "Do you wish to add Swap memmory (y/n) " yn
+    read -p "Do you wish to add Swap memmory (y/n): " yn
     case $yn in
         [y]* ) option=0;break;;
         [n]* ) option=1; break;;
@@ -50,7 +50,7 @@ while true; do
 done
 if [ $option = 0 ]; then
   while true; do
-      read -p "Set the space in GB that you want to add to Swap memmory" gb
+      read -p "Set the space in GB that you want to add to Swap memmory: " gb
       if [[ $gb > 0 ]]; then
         break;
       else
