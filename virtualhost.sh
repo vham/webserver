@@ -27,21 +27,21 @@ while true; do
 done
 if [ $option = 0 ]; then
   while true; do
-      read -p "write user to protect the access: " user
+      read -p "write the name of a USER to protect the access: " user
       case $user in
           * ) username=$user; break;;
       esac
   done
   if [ $username != '' ]; then
     while true; do
-        read -p "write password for the user to protect the access: " pass
+        read -p "write the PASSWORD for the $user to protect the access: " pass
         case $pass in
             * ) password=$pass; break;;
         esac
     done
   fi
 fi
-if [ $name != "" ] && [ $route != "" ]; then
+if [ "$name" != "" ] && [ "$route" != "" ]; then
   sudo rm /etc/apache2/sites-available/$name.conf
   sudo rm /etc/apache2/sites-enabled/$name.conf
   sudo touch /etc/apache2/sites-available/$name.conf
@@ -61,7 +61,7 @@ if [ $name != "" ] && [ $route != "" ]; then
   echo "adding password protection"
   echo $username
   echo $password
-  if [ $username != ""] && [ $password != ""]; then
+  if [ "$username" != ""] && [ "$password" != ""]; then
     sudo htpasswd -bc $route/.htpasswd $username $password
     sudo printf "      <Location />\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "         AuthType Basic\n" >> /etc/apache2/sites-available/$name.conf
