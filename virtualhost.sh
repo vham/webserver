@@ -61,11 +61,11 @@ if [ "$name" != "" ] && [ "$route" != "" ]; then
   echo "adding password protection"
   echo $username
   echo $password
-  if [ "$username" != ""] && [ "$password" != ""]; then
+  if [ "$username" != "" ] && [ "$password" != "" ]; then
     sudo htpasswd -bc $route/.htpasswd $username $password
     sudo printf "      <Location />\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "         AuthType Basic\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         AuthName \'Alto ahí...\'\n" >> /etc/apache2/sites-available/$name.conf
+    sudo printf "         AuthName 'Alto ahí...'\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "         AuthUserFile $route/.htpasswd\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "         Require valid-user\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "      </Location>\n" >> /etc/apache2/sites-available/$name.conf
@@ -74,6 +74,13 @@ if [ "$name" != "" ] && [ "$route" != "" ]; then
   sudo ln -s /etc/apache2/sites-available/$name.conf /etc/apache2/sites-enabled/$name.conf
   echo "Cheking configuration..."
   sudo cat /etc/apache2/sites-available/$name.conf
+  echo "Cheking if the root directory exist..."
+  if [ -d $route ]; then
+    echo "The root directory exist."
+  else
+    sudo mkdir $route
+    echo "The root directory was created."
+  fi
   sudo apachectl -S
   sudo apachectl restart
 fi
