@@ -82,6 +82,7 @@ if [ "$name" != "" ] && [ "$route" != "" ]; then
     echo "The root directory was created."
   fi
   sudo apachectl -S
+  sudo a2enmod rewrite
   sudo apachectl restart
 fi
 
