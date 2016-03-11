@@ -65,7 +65,7 @@ if [ "$name" != "" ] && [ "$route" != "" ]; then
     sudo htpasswd -bc $route/.htpasswd $username $password
     sudo printf "      <Location />\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "         AuthType Basic\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         AuthName 'Alto ahí...'\n" >> /etc/apache2/sites-available/$name.conf
+    sudo printf "         AuthName 'Alto!'\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "         AuthUserFile $route.htpasswd\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "         Require valid-user\n" >> /etc/apache2/sites-available/$name.conf
     sudo printf "      </Location>\n" >> /etc/apache2/sites-available/$name.conf
