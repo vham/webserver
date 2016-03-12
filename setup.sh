@@ -115,7 +115,7 @@ sudo chmod 777 /var/www/html
 #sudo printf '%s\n' '<html><body><h1>I&#39m Running!</h1><br><h4>Test provided by: victorhugo.avila@easy-point.com</h4></body></html>' >> /var/www/html/index.html
 
 while true; do
-    read -p "Do you wish to install MySQL? (y/n)" yn
+    read -p "Do you wish to install MySQL? (y/n): " yn
     case $yn in
         [y]* ) option=0;break;;
         [n]* ) option=1; break;;
@@ -133,7 +133,7 @@ if [ $option = 0 ]; then
 fi
 
 while true; do
-    read -p "Do you wish to install phpMyAdmin? (y/n)" yn
+    read -p "Do you wish to install phpMyAdmin? (y/n): " yn
     case $yn in
         [y]* ) option=0;break;;
         [n]* ) option=1; break;;
