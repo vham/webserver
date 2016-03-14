@@ -13,7 +13,7 @@ while true; do
 done
 while true; do
     read -p "write index absolute path: " path
-    case $name in
+    case $path in
         * ) route=$path; break;;
     esac
 done
@@ -41,39 +41,44 @@ if [ $option = 0 ]; then
     done
   fi
 fi
-if [ "$name" != "" ] && [ "$route" != "" ]; then
-  sudo rm /etc/apache2/sites-available/$name.conf
-  sudo rm /etc/apache2/sites-enabled/$name.conf
-  sudo touch /etc/apache2/sites-available/$name.conf
-  sudo chmod 777 /etc/apache2/sites-available/$name.conf
-  sudo printf "<VirtualHost *:80>\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "     DocumentRoot $route\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      ServerName $name\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      ServerAlias www.$name\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      <Directory $route>\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         DirectoryIndex index.php\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         Options Indexes FollowSymLinks MultiViews\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         AllowOverride All\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         Order allow,deny\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         Allow from all\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         Require all granted\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      </Directory>\n" >> /etc/apache2/sites-available/$name.conf
+if [ "$host" != "" ] && [ "$route" != "" ]; then
+  if [ -d /etc/apache2/sites-available/$host.conf ]; then
+    sudo rm /etc/apache2/sites-available/$host.conf
+  fi
+  if [ -d sudo rm /etc/apache2/sites-enabled/$host.conf ]; then
+    sudo rm /etc/apache2/sites-enabled/$host.conf
+  fi
+  sudo touch /etc/apache2/sites-available/$host.conf
+  sudo chmod 777 /etc/apache2/sites-available/$host.conf
+  sudo printf "<VirtualHost *:80>\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "     DocumentRoot $route\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "      ServerName $host\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "      ServerAlias www.$host\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "      ServerAdmin victorhugo.avila@easypoint.co" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "      <Directory $route>\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "         DirectoryIndex index.php\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "         Options Indexes FollowSymLinks MultiViews\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "         AllowOverride All\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "         Order allow,deny\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "         Allow from all\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "         Require all granted\n" >> /etc/apache2/sites-available/$host.conf
+  sudo printf "      </Directory>\n" >> /etc/apache2/sites-available/$host.conf
   echo "adding password protection"
   echo $username
   echo $password
   if [ "$username" != "" ] && [ "$password" != "" ]; then
     sudo htpasswd -bc $route/.htpasswd $username $password
-    sudo printf "      <Location />\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         AuthType Basic\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         AuthName 'Alto!'\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         AuthUserFile $route.htpasswd\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         Require valid-user\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "      </Location>\n" >> /etc/apache2/sites-available/$name.conf
+    sudo printf "      <Location />\n" >> /etc/apache2/sites-available/$host.conf
+    sudo printf "         AuthType Basic\n" >> /etc/apache2/sites-available/$host.conf
+    sudo printf "         AuthName 'Alto!'\n" >> /etc/apache2/sites-available/$host.conf
+    sudo printf "         AuthUserFile $route.htpasswd\n" >> /etc/apache2/sites-available/$host.conf
+    sudo printf "         Require valid-user\n" >> /etc/apache2/sites-available/$host.conf
+    sudo printf "      </Location>\n" >> /etc/apache2/sites-available/$host.conf
   fi
-  sudo printf "</VirtualHost>\n" >> /etc/apache2/sites-available/$name.conf
-  sudo ln -s /etc/apache2/sites-available/$name.conf /etc/apache2/sites-enabled/$name.conf
+  sudo printf "</VirtualHost>\n" >> /etc/apache2/sites-available/$host.conf
+  sudo ln -s /etc/apache2/sites-available/$host.conf /etc/apache2/sites-enabled/$host.conf
   echo "Cheking configuration..."
-  sudo cat /etc/apache2/sites-available/$name.conf
+  sudo cat /etc/apache2/sites-available/$host.conf
   echo "Cheking if the root directory exist..."
   if [ -d $route ]; then
     echo "The root directory exist."

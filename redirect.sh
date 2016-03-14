@@ -11,82 +11,42 @@ sudo a2enmod alias
 while true; do
     read -p "write the name of the new virtual host: " name
     case $name in
-        * ) host=$name; break;;
+        * ) hostOrigin=$name; break;;
     esac
 done
 while true; do
-    read -p "write index absolute path: " path
-    case $name in
-        * ) route=$path; break;;
+    read -p "write the destination of the redirecction: " redirect
+    case $redirect in
+        * ) hostDestination=$redirect; break;;
     esac
 done
 while true; do
-    read -p "Do you wish to add password protecction (y/n) " yn
-    case $yn in
-        [y]* ) option=0;break;;
-        [n]* ) option=1; break;;
-        * ) echo "Please answer y or n.";;
+    read -p "Wish code of redirecction do you want to set (301 Permanet, 302 Temporal, 303 Replaced, 402 Not available anymore) " c
+    case $c in
+        * ) code=$c; break;;
     esac
 done
-if [ $option = 0 ]; then
-  while true; do
-      read -p "write the name of a USER to protect the access: " user
-      case $user in
-          * ) username=$user; break;;
-      esac
-  done
-  if [ $username != '' ]; then
-    while true; do
-        read -p "write the PASSWORD for the $user to protect the access: " pass
-        case $pass in
-            * ) password=$pass; break;;
-        esac
-    done
+if [ "$hostOrigin" != "" ] && [ "$redirect" != "" ]; then
+  if [ -d /etc/apache2/sites-available/$hostOrigin.conf ]; then
+    sudo rm /etc/apache2/sites-available/$hostOrigin.conf
   fi
-fi
-if [ "$name" != "" ] && [ "$route" != "" ]; then
-  sudo rm /etc/apache2/sites-available/$name.conf
-  sudo rm /etc/apache2/sites-enabled/$name.conf
-  sudo touch /etc/apache2/sites-available/$name.conf
-  sudo chmod 777 /etc/apache2/sites-available/$name.conf
-  sudo printf "<VirtualHost *:80>\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "     DocumentRoot $route\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      ServerName $name\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      ServerAlias www.$name\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      <Directory $route>\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         DirectoryIndex index.php\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         Options Indexes FollowSymLinks MultiViews\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         AllowOverride All\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         Order allow,deny\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         Allow from all\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "         Require all granted\n" >> /etc/apache2/sites-available/$name.conf
-  sudo printf "      </Directory>\n" >> /etc/apache2/sites-available/$name.conf
-  echo "adding password protection"
-  echo $username
-  echo $password
-  if [ "$username" != "" ] && [ "$password" != "" ]; then
-    sudo htpasswd -bc $route/.htpasswd $username $password
-    sudo printf "      <Location />\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         AuthType Basic\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         AuthName 'Alto!'\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         AuthUserFile $route.htpasswd\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "         Require valid-user\n" >> /etc/apache2/sites-available/$name.conf
-    sudo printf "      </Location>\n" >> /etc/apache2/sites-available/$name.conf
+  if [ -d sudo rm /etc/apache2/sites-enabled/$hostOrigin.conf ]; then
+    sudo rm /etc/apache2/sites-enabled/$hostOrigin.conf
   fi
-  sudo printf "</VirtualHost>\n" >> /etc/apache2/sites-available/$name.conf
-  sudo ln -s /etc/apache2/sites-available/$name.conf /etc/apache2/sites-enabled/$name.conf
+  sudo touch /etc/apache2/sites-available/$hostOrigin.conf
+  sudo chmod 777 /etc/apache2/sites-available/$hostOrigin.conf
+  sudo printf "<VirtualHost *:80>\n" >> /etc/apache2/sites-available/$hostOrigin.conf
+  sudo printf "      ServerName $hostOrigin\n" >> /etc/apache2/sites-available/$hostOrigin.conf
+  sudo printf "      ServerAdmin victorhugo.avila@easypoint.co" >> /etc/apache2/sites-available/$hostOrigin.conf
+  sudo printf "      Redirect $code $hostDestination" >> /etc/apache2/sites-available/$hostOrigin.conf
+  sudo printf "</VirtualHost>\n" >> /etc/apache2/sites-available/$hostOrigin.conf
+  sudo ln -s /etc/apache2/sites-available/$hostOrigin.conf /etc/apache2/sites-enabled/$hostOrigin.conf
   echo "Cheking configuration..."
-  sudo cat /etc/apache2/sites-available/$name.conf
-  echo "Cheking if the root directory exist..."
-  if [ -d $route ]; then
-    echo "The root directory exist."
-  else
-    sudo mkdir $route
-    echo "The root directory was created."
-  fi
+  sudo cat /etc/apache2/sites-available/$hostOrigin.conf
   sudo apachectl -S
-  sudo a2enmod rewrite
-  sudo apachectl restart
+  sudo a2ensite $hostOrigin
+  sudo a2ensite $hostDestination
+  sudo service apache2 reload
 fi
 
 echo "**************************************************************"
