@@ -15,7 +15,7 @@ while true; do
     esac
 done
 while true; do
-    read -p "write the destination of the redirecction: (http://www) " redirect
+    read -p "write the destination of the redirecction: (http://) " redirect
     case $redirect in
         * ) hostDestination=$redirect; break;;
     esac
@@ -38,15 +38,15 @@ if [ "$hostOrigin" != "" ] && [ "$redirect" != "" ]; then
   sudo printf "<VirtualHost *:80>\n" >> /etc/apache2/sites-available/$hostOrigin.conf
   sudo printf "      ServerName $hostOrigin\n" >> /etc/apache2/sites-available/$hostOrigin.conf
   sudo printf "      ServerAdmin victorhugo.avila@easypoint.co\n" >> /etc/apache2/sites-available/$hostOrigin.conf
-  sudo printf "      Redirect $code / $hostDestination\n" >> /etc/apache2/sites-available/$hostOrigin.conf
+  sudo printf "      Redirect $code / http://$hostDestination\n" >> /etc/apache2/sites-available/$hostOrigin.conf
   sudo printf "</VirtualHost>\n" >> /etc/apache2/sites-available/$hostOrigin.conf
   sudo ln -s /etc/apache2/sites-available/$hostOrigin.conf /etc/apache2/sites-enabled/$hostOrigin.conf
   echo "Cheking configuration..."
   sudo cat /etc/apache2/sites-available/$hostOrigin.conf
-  sudo apachectl -S
   sudo a2ensite $hostOrigin
   sudo a2ensite $hostDestination
   sudo service apache2 reload
+  sudo apachectl -S
 fi
 
 echo "**************************************************************"
