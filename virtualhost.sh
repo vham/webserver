@@ -41,12 +41,12 @@ if [ $option = 0 ]; then
     done
   fi
 fi
-while true; do
-    read -p "Enter an app_env value: " x
-    case $x in
-        * ) app_env=$x; break;;
-    esac
-done
+#while true; do
+#    read -p "Enter an app_env value: " x
+#    case $x in
+#        * ) app_env=$x; break;;
+#    esac
+#done
 if [ "$host" != "" ] && [ "$route" != "" ]; then
   if [ -d /etc/apache2/sites-available/$host.conf ]; then
     sudo rm /etc/apache2/sites-available/$host.conf
@@ -61,9 +61,9 @@ if [ "$host" != "" ] && [ "$route" != "" ]; then
   sudo printf "      ServerName $host\n" >> /etc/apache2/sites-available/$host.conf
   sudo printf "      ServerAlias www.$host\n" >> /etc/apache2/sites-available/$host.conf
   sudo printf "      ServerAdmin victorhugo.avila@easypoint.co\n" >> /etc/apache2/sites-available/$host.conf
-  if [ "$app_env" != "" ]; then
-  sudo printf "      SetEnv APP_ENV $app_env\n" >> /etc/apache2/sites-available/$host.conf
-  fi
+  #if [ "$app_env" != "" ]; then
+  #sudo printf "      SetEnv APP_ENV $app_env\n" >> /etc/apache2/sites-available/$host.conf
+  #fi
   sudo printf "      <Directory $route>\n" >> /etc/apache2/sites-available/$host.conf
   sudo printf "         DirectoryIndex index.php\n" >> /etc/apache2/sites-available/$host.conf
   sudo printf "         Options Indexes FollowSymLinks MultiViews\n" >> /etc/apache2/sites-available/$host.conf

@@ -19,14 +19,10 @@ echo "**************************************************************"
 sudo apt-get -y update
 echo "Installing vim..."
 sudo apt-get -y install vim
-echo "Installing wget..."
-sudo apt-get -y install wget
 echo "Installing unzip..."
 sudo apt-get -y install unzip
 echo "Installing rpm..."
 sudo apt-get -y install rpm
-echo "Installing debconf..."
-sudo apt-get install debconf
 #echo "Installing GIT..."
 #sudo apt-get install git
 
@@ -97,15 +93,16 @@ if [ $option = 1 ]; then
   sudo cp security.conf /etc/apache2/conf-enabled/
   sudo a2dissite default
   sudo rm -r /var/www/html/index.*
+  sudo touch /var/www/html/index.html
   sudo a2dismod autoindex -f
   sudo apachectl restart
 else
   echo "Deploying development enviroment..."
 fi
 
-echo "Preparing folders authorization"
-sudo chmod 555 /var/www/
-sudo chmod 777 /var/www/html
+#echo "Preparing folders authorization"
+#sudo chmod 555 /var/www/
+#sudo chmod 777 /var/www/html
 
 #echo "Preparing some test"
 #if [ $option = 0 ]; then
@@ -154,7 +151,6 @@ sudo apt-get -y install php5 php5-common libapache2-mod-php5 php5-cli php5-json 
 
 sudo service apache2 restart
 sudo touch /var/www/html/info.php
-sudo chmod 777 /var/www/html/info.php
 #if [ $option = 0 ]; then
 sudo printf '%s\n' '<?php phpinfo(); ?>' >> /var/www/html/info.php
 #fi
